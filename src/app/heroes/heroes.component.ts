@@ -11,7 +11,9 @@ import { MessageService } from '../message.service';
 })
 export class HeroesComponent implements OnInit {
 
+/* com a utilização das rotas, matou a utilidade
   selectedHero?: Hero;
+ */
 
   heroes: Hero[] = [];
 // criando um serviço de heroi privado
@@ -29,9 +31,11 @@ constructor(private heroService: HeroService, private messageService: MessageSer
   }
 // caso selecione um heroi ele seta o heroi selecionado que vem de "hero"
 
+/* com a inserção das rotas para visualização dos herois, matou a funcionalidade dessa função
 onSelect(hero: Hero): void {
   this.selectedHero = hero;
   this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
 }
+*/
 
 }
