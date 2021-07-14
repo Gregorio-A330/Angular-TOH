@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
-import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-heroes',
@@ -10,25 +9,34 @@ import { MessageService } from '../message.service';
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
-
-/* com a utilização das rotas, matou a utilidade
-  selectedHero?: Hero;
- */
-
   heroes: Hero[] = [];
-// criando um serviço de heroi privado
-constructor(private heroService: HeroService, private messageService: MessageService) { }
-//criando a função GET dos herois e dando "bind" ao array criado acima
-  getHeroes(): void {
-    //quando for realizar uma chamada desse padrão e vier de um servidor, sempre utilizar uma função assincrona
-    //para que tenha o devido efeito
-    this.heroService.getHeroes()
-      .subscribe(heroes => this.heroes = heroes);//utilizando este metodo, pois não estamos consumindo de um servidor remoto
-  }
-//ao iniciar ele chama a função get e plota dentro do array
+
+  constructor(private heroService: HeroService) { }
+
   ngOnInit() {
     this.getHeroes();
   }
+
+  getHeroes(): void {
+    this.heroService.getHeroes()
+    .subscribe(heroes => this.heroes = heroes);
+  }
+
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.addHero({ name } as Hero)
+      .subscribe(hero => {
+        this.heroes.push(hero);
+      });
+  }
+
+  delete(hero: Hero): void {
+    this.heroes = this.heroes.filter(h => h !== hero);
+    this.heroService.deleteHero(hero.id).subscribe();
+  }
+
+}
 // caso selecione um heroi ele seta o heroi selecionado que vem de "hero"
 
 /* com a inserção das rotas para visualização dos herois, matou a funcionalidade dessa função
@@ -38,4 +46,4 @@ onSelect(hero: Hero): void {
 }
 */
 
-}
+
